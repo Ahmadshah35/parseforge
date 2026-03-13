@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources & Guides - ParseForge</title>
+    <link rel="stylesheet" href="assets/css/style.css?v=1.1">
+    <style>
+        .resources-hero {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(21, 25, 50, 0.95) 100%);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resources-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        .resources-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resources-hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.5rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-glass);
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.25rem;
+        }
+
+        .resources-nav {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--border-glass);
+            padding: 1rem 0;
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+
+        .resources-tabs {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .resources-tabs button {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .resources-tabs button:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .resources-tabs button.active {
+            color: var(--neon-blue);
+            border-bottom-color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .resources-section {
+            padding: 4rem 0;
+            background: var(--bg-primary);
+        }
+
+        .category-header {
+            margin-bottom: 3rem;
+        }
+
+        .category-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .category-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .resource-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 217, 255, 0.3);
+            border-color: var(--neon-blue);
+        }
+
+        .resource-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .resource-content {
+            padding: 1.5rem;
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-tag {
+            padding: 0.25rem 0.75rem;
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--neon-blue);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .resource-tag.guide {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+
+        .resource-tag.tutorial {
+            background: rgba(29, 233, 182, 0.1);
+            color: var(--cyber-green);
+            border-color: var(--cyber-green);
+        }
+
+        .resource-tag.video {
+            background: rgba(184, 77, 255, 0.1);
+            color: var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+
+        .resource-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .resource-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .resource-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-glass);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .resource-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .newsletter-section {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(29, 233, 182, 0.1) 100%);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+        }
+
+        .newsletter-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-section p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border-glass);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .newsletter-form input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .newsletter-form button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-blue));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 217, 255, 0.4);
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1de9b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Circuit board P -->
+                        <path d="M8 4 L8 28 M8 4 L18 4 C22 4 24 6 24 10 C24 14 22 16 18 16 L8 16" 
+                              stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Circuit nodes -->
+                        <circle cx="8" cy="4" r="2" fill="#00d9ff"/>
+                        <circle cx="18" cy="4" r="2" fill="#00d9ff"/>
+                        <circle cx="24" cy="10" r="2" fill="#1de9b6"/>
+                        <circle cx="18" cy="16" r="2" fill="#1de9b6"/>
+                        <circle cx="8" cy="16" r="2" fill="#00ff88"/>
+                        <circle cx="8" cy="28" r="2" fill="#00ff88"/>
+                        <!-- Connecting lines -->
+                        <line x1="8" y1="22" x2="14" y2="22" stroke="#00d9ff" stroke-width="1.5" opacity="0.6"/>
+                        <circle cx="14" cy="22" r="1.5" fill="#00d9ff" opacity="0.8"/>
+                    </svg>
+                </span>
+                ParseForge
+            </a>
+            <ul class="nav-links">
+                <li><a href="docs.html">Documentation</a></li>
+                <li><a href="sdks.html">SDKs & APIs</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="resources.html" class="active">Resources</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="login.html" class="btn-primary">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="resources-hero">
+        <div class="container">
+            <h1>Developer Resources</h1>
+            <p>Guides, tutorials, and best practices to help you build better applications</p>
+            <div class="search-box">
+                <input type="text" placeholder="Search resources, guides, tutorials...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Navigation -->
+    <nav class="resources-nav">
+        <div class="container">
+            <div class="resources-tabs">
+                <button class="active" onclick="filterResources('all')">All Resources</button>
+                <button onclick="filterResources('guides')">Guides</button>
+                <button onclick="filterResources('tutorials')">Tutorials</button>
+                <button onclick="filterResources('videos')">Videos</button>
+                <button onclick="filterResources('blog')">Blog</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Getting Started Section -->
+    <section class="resources-section">
+        <div class="container">
+            <div class="category-header">
+                <h2>🚀 Getting Started</h2>
+                <p>New to ParseForge? Start here with our beginner-friendly guides</p>
+            </div>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-image">📘</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag guide">Guide</span>
+                            <span class="resource-duration">5 min read</span>
+                        </div>
+                        <h3 class="resource-title">Quick Start Guide</h3>
+                        <p class="resource-description">
+                            Get up and running with ParseForge in under 5 minutes. Learn how to create your first API key and make your first request.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Sarah Johnson</span>
+                            </div>
+                            <span>Feb 28, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">🎓</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag tutorial">Tutorial</span>
+                            <span class="resource-duration">15 min</span>
+                        </div>
+                        <h3 class="resource-title">Authentication Basics</h3>
+                        <p class="resource-description">
+                            Learn how to authenticate your API requests securely using API keys, OAuth, and JWT tokens.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Mike Chen</span>
+                            </div>
+                            <span>Feb 25, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">⚙️</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag guide">Guide</span>
+                            <span class="resource-duration">8 min read</span>
+                        </div>
+                        <h3 class="resource-title">Setting Up Your Environment</h3>
+                        <p class="resource-description">
+                            Step-by-step guide to configuring your development environment for optimal ParseForge integration.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Alex Rivera</span>
+                            </div>
+                            <span>Feb 22, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Topics -->
+            <div class="category-header">
+                <h2>🔧 Advanced Topics</h2>
+                <p>Deep dive into advanced features and optimization techniques</p>
+            </div>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-image">🚀</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag tutorial">Tutorial</span>
+                            <span class="resource-duration">20 min</span>
+                        </div>
+                        <h3 class="resource-title">Rate Limiting & Optimization</h3>
+                        <p class="resource-description">
+                            Master rate limiting strategies and learn how to optimize your API calls for better performance.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Emma Watson</span>
+                            </div>
+                            <span>Feb 20, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">🔐</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag guide">Guide</span>
+                            <span class="resource-duration">12 min read</span>
+                        </div>
+                        <h3 class="resource-title">Security Best Practices</h3>
+                        <p class="resource-description">
+                            Comprehensive guide to securing your API integration, managing secrets, and preventing common vulnerabilities.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>David Park</span>
+                            </div>
+                            <span>Feb 18, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">📊</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag tutorial">Tutorial</span>
+                            <span class="resource-duration">25 min</span>
+                        </div>
+                        <h3 class="resource-title">Building a Real-time Dashboard</h3>
+                        <p class="resource-description">
+                            Learn how to build a real-time analytics dashboard using webhooks and server-sent events.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Lisa Kumar</span>
+                            </div>
+                            <span>Feb 15, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Tutorials -->
+            <div class="category-header">
+                <h2>🎥 Video Tutorials</h2>
+                <p>Watch and learn with our video tutorials</p>
+            </div>
+
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-image">▶️</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag video">Video</span>
+                            <span class="resource-duration">12:45</span>
+                        </div>
+                        <h3 class="resource-title">Building Your First App</h3>
+                        <p class="resource-description">
+                            Follow along as we build a complete application from scratch using ParseForge APIs.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Tech Team</span>
+                            </div>
+                            <span>Feb 10, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">▶️</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag video">Video</span>
+                            <span class="resource-duration">8:30</span>
+                        </div>
+                        <h3 class="resource-title">API Integration Patterns</h3>
+                        <p class="resource-description">
+                            Explore common integration patterns and architectural decisions for scalable applications.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Engineering</span>
+                            </div>
+                            <span>Feb 5, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resource-card">
+                    <div class="resource-image">▶️</div>
+                    <div class="resource-content">
+                        <div class="resource-meta">
+                            <span class="resource-tag video">Video</span>
+                            <span class="resource-duration">15:20</span>
+                        </div>
+                        <h3 class="resource-title">Debugging & Troubleshooting</h3>
+                        <p class="resource-description">
+                            Learn effective debugging techniques and how to troubleshoot common API integration issues.
+                        </p>
+                        <div class="resource-footer">
+                            <div class="resource-author">
+                                <span>👤</span>
+                                <span>Support Team</span>
+                            </div>
+                            <span>Jan 30, 2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <h2>Stay Updated</h2>
+            <p>Get the latest tutorials, guides, and product updates delivered to your inbox</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); subscribeNewsletter();">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ParseForge</h4>
+                    <p>Build powerful applications with our developer platform.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="sdks.html">SDKs & APIs</a></li>
+                        <li><a href="marketplace.html">Marketplace</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="playground.html">API Playground</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="resources.html">Guides & Tutorials</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Account</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ParseForge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function filterResources(category) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.resources-tabs button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Filter logic would go here
+            console.log('Filtering by:', category);
+        }
+
+        function subscribeNewsletter() {
+            alert('Thank you for subscribing! Check your email for confirmation.');
+        }
+    </script>
+</body>
+</html>

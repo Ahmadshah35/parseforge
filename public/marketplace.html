@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - Buy SDKs & APIs | ParseForge</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/marketplace.css?v=2.3">
+</head>
+<body>
+    <!--Header Include -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="marketplace-hero">
+        <div class="container">
+            <h1>API & SDK Marketplace</h1>
+            <p>Purchase individual APIs and SDKs with lifetime access. One-time payment, no subscriptions.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <strong id="totalProducts">24</strong>
+                    <span>Products</span>
+                </div>
+                <div class="stat">
+                    <strong>100K+</strong>
+                    <span>Downloads</span>
+                </div>
+                <div class="stat">
+                    <strong>4.8/5</strong>
+                    <span>Avg Rating</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters & Search -->
+    <section class="marketplace-section">
+        <div class="container">
+            <div class="marketplace-header">
+                <div class="search-filter">
+                    <input type="search" id="searchProducts" class="search-input" placeholder="Search APIs, SDKs...">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="api">APIs</option>
+                        <option value="sdk">SDKs</option>
+                        <option value="library">Libraries</option>
+                    </select>
+                    <select id="priceFilter" class="filter-select">
+                        <option value="all">All Prices</option>
+                        <option value="0-50">$0 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-200">$100 - $200</option>
+                        <option value="200+">$200+</option>
+                    </select>
+                    <select id="sortBy" class="filter-select">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="popular">Most Popular</option>
+                        <option value="newest">Newest</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination will be generated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Backdrop Overlay -->
+    <div class="cart-backdrop" id="cartBackdrop" onclick="toggleCart()"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart">
+                <p>Your cart is empty</p>
+                <span style="font-size: 3rem;">🛒</span>
+            </div>
+        </div>
+        
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <strong id="cartTotal">$0.00</strong>
+            </div>
+            <button class="btn-primary" onclick="proceedToCheckout()" style="width: 100%;">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content product-modal-content">
+            <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            <div id="productDetails">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content checkout-modal-content">
+            <div class="modal-header">
+                <h2>Checkout</h2>
+                <button class="modal-close" onclick="closeCheckoutModal()">&times;</button>
+            </div>
+            <div class="checkout-content">
+                <div class="checkout-left">
+                    <h3>Billing Information</h3>
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label class="required">Full Name</label>
+                            <input type="text" name="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Email Address</label>
+                            <input type="email" name="email" placeholder="you@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" name="company" placeholder="Your company (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Country</label>
+                            <select name="country" id="countrySelect" required>
+                                <option value="">Select your country</option>
+                                <option value="US">🇺🇸 United States</option>
+                                <option value="UK">🇬🇧 United Kingdom</option>
+                                <option value="CA">🇨🇦 Canada</option>
+                                <option value="AU">🇦🇺 Australia</option>
+                                <option value="DE">🇩🇪 Germany</option>
+                                <option value="FR">🇫🇷 France</option>
+                                <option value="JP">🇯🇵 Japan</option>
+                                <option value="IN">🇮🇳 India</option>
+                                <option value="BR">🇧🇷 Brazil</option>
+                                <option value="MX">🇲🇽 Mexico</option>
+                                <option value="NL">🇳🇱 Netherlands</option>
+                                <option value="SE">🇸🇪 Sweden</option>
+                                <option value="SG">🇸🇬 Singapore</option>
+                                <option value="AE">🇦🇪 UAE</option>
+                                <option value="OTHER">🌍 Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="stateGroup" style="display: none;">
+                            <label class="required" id="stateLabel">State</label>
+                            <select name="state" id="stateSelect">
+                                <option value="">Select state</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="zipGroup" style="display: none;">
+                            <label class="required" id="zipLabel">ZIP Code</label>
+                            <input type="text" name="zipCode" id="zipCode" placeholder="Enter ZIP code">
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem;">Payment Method</h3>
+                        <div class="payment-methods">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="paypal" checked>
+                                <span>💼 PayPal</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="paypal-card">
+                                <span>💳 PayPal Credit Card</span>
+                            </label>
+                        </div>
+
+                        <div class="card-details" id="cardDetails" style="display: none;">
+                            <div class="form-group">
+                                <label class="required">Card Number</label>
+                                <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Expiry Date</label>
+                                <input type="text" name="expiry" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label class="required">CVV</label>
+                                <input type="text" name="cvv" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1.5rem;">
+                            Complete Purchase
+                        </button>
+                    </form>
+                </div>
+
+                <div class="checkout-right">
+                    <h3>Order Summary</h3>
+                    <div class="order-items" id="orderItems">
+                        <!-- Order items will be shown here -->
+                    </div>
+                    <div class="order-totals">
+                        <div class="order-row">
+                            <span>Subtotal:</span>
+                            <span id="orderSubtotal">$0.00</span>
+                        </div>
+                        <div class="order-row" id="taxRow" style="display: none;">
+                            <span id="taxLabel">Tax:</span>
+                            <span id="orderTax">$0.00</span>
+                        </div>
+                        <div class="order-row total">
+                            <strong>Total:</strong>
+                            <strong id="orderTotal">$0.00</strong>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 1rem; padding: 0 1rem;">
+                        💡 Tax will be calculated based on your state/province
+                    </p>
+                    
+                    <div class="security-badges">
+                        <p>🔒 Secure Checkout</p>
+                        <p style="font-size: 0.875rem; color: var(--text-muted);">256-bit SSL encryption</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Include -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/marketplace.js?v=1.8"></script>
+</body>
+</html>

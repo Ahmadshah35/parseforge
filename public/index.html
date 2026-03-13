@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParseForge - Developer Platform</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Header Include -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Build Powerful Applications with ParseForge</h1>
+                <p>A complete developer platform with robust APIs, comprehensive documentation, and powerful tools to accelerate your development.</p>
+                <div class="hero-buttons">
+                    <a href="docs.html" class="btn-primary">View Documentation</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-code">
+                <div class="code-window">
+                    <div class="code-header">
+                        <div class="code-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="code-title">quick_start.js</span>
+                    </div>
+                    <pre><code><span class="comment">// Initialize ParseForge SDK</span>
+<span class="keyword">const</span> parseforge = <span class="keyword">require</span>(<span class="string">'parseforge-sdk'</span>);
+
+<span class="keyword">const</span> <span class="function">client</span> = parseforge.<span class="function">init</span>({
+  apiKey: <span class="string">'pk_live_••••••••'</span>
+});
+
+<span class="comment">// Make your first API call</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> client.users.<span class="function">get</span>(<span class="string">'123'</span>);
+console.<span class="function">log</span>(response);</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Everything You Need to Build Amazing Applications</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Comprehensive Docs</h3>
+                    <p>Detailed API reference with examples in multiple programming languages and interactive code samples.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔑</div>
+                    <h3>Easy Authentication</h3>
+                    <p>Secure API key management with support for multiple environments and granular permissions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>High-performance APIs with global CDN and average response times under 100ms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>Developer Tools</h3>
+                    <p>Interactive API explorer, SDKs for popular languages, and debugging tools built-in.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Monitor API usage, track performance metrics, and get insights on your application's behavior.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>Bank-level encryption, SOC 2 compliance, and advanced security features to protect your data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section class="quick-start">
+        <div class="container">
+            <h2>Get Started in Minutes</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Account</h3>
+                    <p>Sign up for free and get instant access to all APIs</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Get API Key</h3>
+                    <p>Generate your API credentials from the dashboard</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Start Building</h3>
+                    <p>Make your first API call and start building</p>
+                </div>
+            </div>
+            <a href="login.html" class="btn-cta">Start Building Now →</a>
+        </div>
+    </section>
+
+    <!-- Footer Include -->
+    <div id="footer-placeholder"></div>
+
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ParseForge</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+    <!-- Admin Navigation -->
+    <nav class="admin-navbar">
+        <div class="admin-nav-container">
+            <a href="index.html" class="admin-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1de9b6;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Circuit board P -->
+                    <path d="M8 4 L8 28 M8 4 L18 4 C22 4 24 6 24 10 C24 14 22 16 18 16 L8 16" 
+                          stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Circuit nodes -->
+                    <circle cx="8" cy="4" r="2" fill="#00d9ff"/>
+                    <circle cx="18" cy="4" r="2" fill="#00d9ff"/>
+                    <circle cx="24" cy="10" r="2" fill="#1de9b6"/>
+                    <circle cx="18" cy="16" r="2" fill="#1de9b6"/>
+                    <circle cx="8" cy="16" r="2" fill="#00ff88"/>
+                    <circle cx="8" cy="28" r="2" fill="#00ff88"/>
+                    <!-- Connecting lines -->
+                    <line x1="8" y1="22" x2="14" y2="22" stroke="#00d9ff" stroke-width="1.5" opacity="0.6"/>
+                    <circle cx="14" cy="22" r="1.5" fill="#00d9ff" opacity="0.8"/>
+                </svg>
+                <span>ParseForge Admin</span>
+            </a>
+            <div class="admin-user">
+                <span class="admin-username">Admin User</span>
+                <a href="index.html" class="btn-secondary btn-sm">Exit Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-menu">
+                <button class="admin-menu-item active" data-section="overview">
+                    <span class="menu-icon">📊</span>
+                    <span>Overview</span>
+                </button>
+                <button class="admin-menu-item" data-section="pricing">
+                    <span class="menu-icon">💰</span>
+                    <span>Pricing Plans</span>
+                </button>
+                <button class="admin-menu-item" data-section="apis">
+                    <span class="menu-icon">🔌</span>
+                    <span>APIs & SDKs</span>
+                </button>
+                <button class="admin-menu-item" data-section="content">
+                    <span class="menu-icon">📝</span>
+                    <span>Content Management</span>
+                </button>
+                <button class="admin-menu-item" data-section="branding">
+                    <span class="menu-icon">🎨</span>
+                    <span>Logo & Branding</span>
+                </button>
+                <button class="admin-menu-item" data-section="users">
+                    <span class="menu-icon">👥</span>
+                    <span>Users & Subscriptions</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Overview Section -->
+            <section id="overview" class="admin-section active">
+                <div class="admin-header">
+                    <h1>Admin Dashboard Overview</h1>
+                    <p>Manage your ParseForge platform</p>
+                </div>
+
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💳</div>
+                        <div class="stat-info">
+                            <h3 id="activeSubscriptions">0</h3>
+                            <p>Active Subscriptions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📡</div>
+                        <div class="stat-info">
+                            <h3 id="totalAPIs">0</h3>
+                            <p>Available APIs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <h3 id="monthlyRevenue">$0</h3>
+                            <p>Monthly Revenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activities">
+                    <h2>Recent Activities</h2>
+                    <div class="activity-list" id="recentActivities">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section id="pricing" class="admin-section">
+                <div class="admin-header">
+                    <h1>Manage Pricing Plans</h1>
+                    <button class="btn-primary" onclick="openPricingModal()">
+                        <span>➕</span> Add New Plan
+                    </button>
+                </div>
+
+                <div class="pricing-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Plan Name</th>
+                                <th>Monthly Price</th>
+                                <th>Yearly Price</th>
+                                <th>Features</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pricingTableBody">
+                            <!-- Pricing plans will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- APIs & SDKs Section -->
+            <section id="apis" class="admin-section">
+                <div class="admin-header">
+                    <h1>Manage APIs & SDKs</h1>
+                    <button class="btn-primary" onclick="openAPIModal()">
+                        <span>➕</span> Add New API/SDK
+                    </button>
+                </div>
+
+                <div class="api-grid" id="apiGrid">
+                    <!-- API cards will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Content Management Section -->
+            <section id="content" class="admin-section">
+                <div class="admin-header">
+                    <h1>Content Management</h1>
+                    <p>Manage documentation, about us, and other content</p>
+                </div>
+
+                <div class="content-sections">
+                    <div class="content-card">
+                        <h3>About Us</h3>
+                        <button class="btn-secondary" onclick="editContent('about')">Edit Content</button>
+                    </div>
+                    <div class="content-card">
+                        <h3>Documentation</h3>
+                        <button class="btn-secondary" onclick="editContent('docs')">Edit Content</button>
+                    </div>
+                    <div class="content-card">
+                        <h3>Resources & Blog</h3>
+                        <button class="btn-secondary" onclick="editContent('resources')">Edit Content</button>
+                    </div>
+                    <div class="content-card">
+                        <h3>Homepage Hero</h3>
+                        <button class="btn-secondary" onclick="editContent('hero')">Edit Content</button>
+                    </div>
+                </div>
+
+                <div class="content-editor" id="contentEditor" style="display: none;">
+                    <h3 id="contentEditorTitle">Edit Content</h3>
+                    <form id="contentForm">
+                        <input type="hidden" id="contentType">
+                        <div class="form-group">
+                            <label for="contentTitle">Title</label>
+                            <input type="text" id="contentTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="contentBody">Content</label>
+                            <textarea id="contentBody" class="form-control" rows="10"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="closeContentEditor()">Cancel</button>
+                            <button type="submit" class="btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Branding Section -->
+            <section id="branding" class="admin-section">
+                <div class="admin-header">
+                    <h1>Logo & Branding</h1>
+                    <p>Manage your brand identity</p>
+                </div>
+
+                <div class="branding-container">
+                    <div class="logo-preview">
+                        <h3>Current Logo</h3>
+                        <div class="logo-display" id="currentLogo">
+                            <svg width="64" height="64" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="logo-preview" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#1de9b6;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M8 8 L24 8 L24 16 L16 16 L16 24" stroke="url(#logo-preview)" stroke-width="2" fill="none"/>
+                                <circle cx="8" cy="8" r="2" fill="url(#logo-preview)"/>
+                                <circle cx="24" cy="8" r="2" fill="url(#logo-preview)"/>
+                                <circle cx="24" cy="16" r="2" fill="url(#logo-preview)"/>
+                                <circle cx="16" cy="16" r="2" fill="url(#logo-preview)"/>
+                                <circle cx="16" cy="24" r="2" fill="url(#logo-preview)"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="logo-upload">
+                        <h3>Upload New Logo</h3>
+                        <form id="logoForm">
+                            <div class="form-group">
+                                <label for="logoFile">Logo File (SVG, PNG, or JPG)</label>
+                                <input type="file" id="logoFile" accept=".svg,.png,.jpg,.jpeg" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="logoType">Logo Type</label>
+                                <select id="logoType" class="form-control">
+                                    <option value="svg">SVG Code</option>
+                                    <option value="image">Image URL</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="logoCode">SVG Code / Image URL</label>
+                                <textarea id="logoCode" class="form-control" rows="8" placeholder="Paste SVG code or image URL"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Update Logo</button>
+                        </form>
+                    </div>
+
+                    <div class="color-scheme">
+                        <h3>Color Scheme</h3>
+                        <div class="color-inputs">
+                            <div class="form-group">
+                                <label for="primaryColor">Primary Color</label>
+                                <input type="color" id="primaryColor" value="#00d9ff">
+                            </div>
+                            <div class="form-group">
+                                <label for="secondaryColor">Secondary Color</label>
+                                <input type="color" id="secondaryColor" value="#1de9b6">
+                            </div>
+                            <div class="form-group">
+                                <label for="accentColor">Accent Color</label>
+                                <input type="color" id="accentColor" value="#b84dff">
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="updateColorScheme()">Apply Colors</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users & Subscriptions Section -->
+            <section id="users" class="admin-section">
+                <div class="admin-header">
+                    <h1>Users & Subscriptions</h1>
+                    <div class="header-actions">
+                        <input type="search" id="userSearch" placeholder="Search users..." class="search-input">
+                        <button class="btn-primary" onclick="openUserModal()">
+                            <span>➕</span> Add User
+                        </button>
+                    </div>
+                </div>
+
+                <div class="users-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Plan</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="usersPagination">
+                    <!-- Pagination will be generated here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Pricing Modal -->
+    <div id="pricingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="pricingModalTitle">Add Pricing Plan</h2>
+                <button class="modal-close" onclick="closePricingModal()">&times;</button>
+            </div>
+            <form id="pricingForm">
+                <input type="hidden" id="pricingId">
+                <div class="form-group">
+                    <label for="planName">Plan Name</label>
+                    <input type="text" id="planName" class="form-control" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="monthlyPrice">Monthly Price ($)</label>
+                        <input type="number" id="monthlyPrice" class="form-control" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearlyPrice">Yearly Price ($)</label>
+                        <input type="number" id="yearlyPrice" class="form-control" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="planFeatures">Features (one per line)</label>
+                    <textarea id="planFeatures" class="form-control" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="planStatus">Status</label>
+                    <select id="planStatus" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closePricingModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Plan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- API/SDK Modal -->
+    <div id="apiModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="apiModalTitle">Add API/SDK</h2>
+                <button class="modal-close" onclick="closeAPIModal()">&times;</button>
+            </div>
+            <form id="apiForm">
+                <input type="hidden" id="apiId">
+                <div class="form-group">
+                    <label for="apiName">API/SDK Name</label>
+                    <input type="text" id="apiName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="apiType">Type</label>
+                    <select id="apiType" class="form-control">
+                        <option value="api">API</option>
+                        <option value="sdk">SDK</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="apiLanguage">Language/Platform</label>
+                    <input type="text" id="apiLanguage" class="form-control" placeholder="e.g., JavaScript, Python, REST">
+                </div>
+                <div class="form-group">
+                    <label for="apiVersion">Version</label>
+                    <input type="text" id="apiVersion" class="form-control" placeholder="e.g., v2.1.0">
+                </div>
+                <div class="form-group">
+                    <label for="apiDescription">Description</label>
+                    <textarea id="apiDescription" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="apiDocumentation">Documentation URL</label>
+                    <input type="url" id="apiDocumentation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="apiStatus">Status</label>
+                    <select id="apiStatus" class="form-control">
+                        <option value="stable">Stable</option>
+                        <option value="beta">Beta</option>
+                        <option value="deprecated">Deprecated</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAPIModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save API/SDK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Add User</h2>
+                <button class="modal-close" onclick="closeUserModal()">&times;</button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label for="userName">Full Name</label>
+                    <input type="text" id="userName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email Address</label>
+                    <input type="email" id="userEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPlan">Subscription Plan</label>
+                    <select id="userPlan" class="form-control">
+                        <option value="starter">Starter</option>
+                        <option value="professional">Professional</option>
+                        <option value="enterprise">Enterprise</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userStatus">Account Status</label>
+                    <select id="userStatus" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeUserModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Save User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

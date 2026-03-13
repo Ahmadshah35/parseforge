@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Playground - ParseForge</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .playground-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        .playground-sidebar {
+            background: linear-gradient(180deg, rgba(26, 31, 58, 0.95) 0%, rgba(10, 14, 39, 0.95) 100%);
+            border-right: 1px solid var(--border);
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--gray);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .endpoint-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .endpoint-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .endpoint-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .endpoint-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .endpoint-btn .method {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .method.get { background: #dbeafe; color: #1e40af; }
+        .method.post { background: #d1fae5; color: #059669; }
+        .method.put { background: #fef3c7; color: #d97706; }
+        .method.delete { background: #fee2e2; color: #dc2626; }
+
+        .endpoint-btn.active .method {
+            background: white;
+        }
+
+        .playground-main {
+            padding: 3rem;
+        }
+
+        .playground-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .playground-header .method-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .playground-header h1 {
+            font-size: 1.75rem;
+            color: var(--dark);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h3 {
+            font-size: 1.125rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.875rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.875rem;
+        }
+
+        .param-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 2fr 40px;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .param-row input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .param-row input[type="text"] {
+            padding: 0.5rem 0.75rem;
+        }
+
+        .add-param-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .add-param-btn:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .execute-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .execute-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .execute-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .response-section {
+            margin-top: 3rem;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .response-header h3 {
+            font-size: 1.125rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .response-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .response-tabs button {
+            padding: 0.5rem 1rem;
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+            transition: all 0.2s;
+        }
+
+        .response-tabs button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .response-box {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .response-box pre {
+            color: #e2e8f0;
+            font-family: 'Monaco', monospace;
+            font-size: 0.875rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .copy-response-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+        }
+
+        .copy-response-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .status-badge.success {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-badge.error {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .response-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .response-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .response-meta-item label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .response-meta-item span {
+            font-size: 0.95rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00d9ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#1de9b6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Circuit board P -->
+                        <path d="M8 4 L8 28 M8 4 L18 4 C22 4 24 6 24 10 C24 14 22 16 18 16 L8 16" 
+                              stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Circuit nodes -->
+                        <circle cx="8" cy="4" r="2" fill="#00d9ff"/>
+                        <circle cx="18" cy="4" r="2" fill="#00d9ff"/>
+                        <circle cx="24" cy="10" r="2" fill="#1de9b6"/>
+                        <circle cx="18" cy="16" r="2" fill="#1de9b6"/>
+                        <circle cx="8" cy="16" r="2" fill="#00ff88"/>
+                        <circle cx="8" cy="28" r="2" fill="#00ff88"/>
+                        <!-- Connecting lines -->
+                        <line x1="8" y1="22" x2="14" y2="22" stroke="#00d9ff" stroke-width="1.5" opacity="0.6"/>
+                        <circle cx="14" cy="22" r="1.5" fill="#00d9ff" opacity="0.8"/>
+                    </svg>
+                </span>
+                ParseForge
+            </a>
+            <ul class="nav-links">
+                <li><a href="docs.html">Documentation</a></li>
+                <li><a href="sdks.html">SDKs & APIs</a></li>
+                <li><a href="marketplace.html">Marketplace</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="playground.html" class="active">Playground</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="login.html" class="btn-primary">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="playground-container">
+        <!-- Sidebar -->
+        <aside class="playground-sidebar">
+            <div class="sidebar-section">
+                <h3>Users API</h3>
+                <div class="endpoint-list">
+                    <button class="endpoint-btn active" onclick="loadEndpoint('get', '/api/users', 'Get all users')">
+                        <span class="method get">GET</span>
+                        <span>/api/users</span>
+                    </button>
+                    <button class="endpoint-btn" onclick="loadEndpoint('get', '/api/users/:id', 'Get user by ID')">
+                        <span class="method get">GET</span>
+                        <span>/api/users/:id</span>
+                    </button>
+                    <button class="endpoint-btn" onclick="loadEndpoint('post', '/api/users', 'Create user')">
+                        <span class="method post">POST</span>
+                        <span>/api/users</span>
+                    </button>
+                    <button class="endpoint-btn" onclick="loadEndpoint('put', '/api/users/:id', 'Update user')">
+                        <span class="method put">PUT</span>
+                        <span>/api/users/:id</span>
+                    </button>
+                    <button class="endpoint-btn" onclick="loadEndpoint('delete', '/api/users/:id', 'Delete user')">
+                        <span class="method delete">DELETE</span>
+                        <span>/api/users/:id</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Data API</h3>
+                <div class="endpoint-list">
+                    <button class="endpoint-btn" onclick="loadEndpoint('get', '/api/data', 'Get all data')">
+                        <span class="method get">GET</span>
+                        <span>/api/data</span>
+                    </button>
+                    <button class="endpoint-btn" onclick="loadEndpoint('post', '/api/data', 'Create data')">
+                        <span class="method post">POST</span>
+                        <span>/api/data</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Other</h3>
+                <div class="endpoint-list">
+                    <button class="endpoint-btn" onclick="loadEndpoint('get', '/api/status', 'API status')">
+                        <span class="method get">GET</span>
+                        <span>/api/status</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="playground-main">
+            <div class="playground-header">
+                <span class="method-badge get">GET</span>
+                <h1 id="endpoint-title">/api/users</h1>
+            </div>
+
+            <!-- Request Configuration -->
+            <div class="form-section">
+                <h3>🔧 Request Configuration</h3>
+                
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter your API key" value="pk_test_sample_key_123">
+                </div>
+
+                <div class="form-group">
+                    <label>Base URL</label>
+                    <input type="text" id="baseUrl" value="http://localhost:3000">
+                </div>
+            </div>
+
+            <!-- Parameters -->
+            <div class="form-section" id="paramsSection" style="display:none;">
+                <h3>📋 Query Parameters</h3>
+                <div id="paramsList">
+                    <div class="param-row">
+                        <input type="checkbox" checked>
+                        <input type="text" placeholder="Key" value="limit">
+                        <input type="text" placeholder="Value" value="10">
+                        <button class="btn-sm" style="padding: 0.25rem 0.5rem;">❌</button>
+                    </div>
+                </div>
+                <button class="add-param-btn" onclick="addParam()">+ Add Parameter</button>
+            </div>
+
+            <!-- Request Body -->
+            <div class="form-section" id="bodySection" style="display:none;">
+                <h3>📝 Request Body (JSON)</h3>
+                <div class="form-group">
+                    <textarea id="requestBody" placeholder='{\n  "key": "value"\n}'></textarea>
+                </div>
+            </div>
+
+            <!-- Execute Button -->
+            <button class="execute-btn" onclick="executeRequest()">
+                <span>▶️</span>
+                <span>Send Request</span>
+            </button>
+
+            <!-- Response Section -->
+            <div class="response-section" id="responseSection" style="display:none;">
+                <div class="response-header">
+                    <h3>📨 Response</h3>
+                    <div class="response-tabs">
+                        <button class="active">Body</button>
+                        <button>Headers</button>
+                    </div>
+                </div>
+
+                <div class="response-meta" id="responseMeta">
+                    <div class="response-meta-item">
+                        <label>Status</label>
+                        <span id="responseStatus">200 OK</span>
+                    </div>
+                    <div class="response-meta-item">
+                        <label>Time</label>
+                        <span id="responseTime">125ms</span>
+                    </div>
+                    <div class="response-meta-item">
+                        <label>Size</label>
+                        <span id="responseSize">342 bytes</span>
+                    </div>
+                </div>
+
+                <div class="response-box">
+                    <button class="copy-response-btn" onclick="copyResponse()">Copy</button>
+                    <pre id="responseBody"></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentEndpoint = { method: 'GET', path: '/api/users', title: 'Get all users' };
+
+        function loadEndpoint(method, path, title) {
+            currentEndpoint = { method, path, title };
+            
+            // Update UI
+            document.querySelector('.playground-header .method-badge').textContent = method;
+            document.querySelector('.playground-header .method-badge').className = `method-badge ${method.toLowerCase()}`;
+            document.getElementById('endpoint-title').textContent = path;
+            
+            // Show/hide sections based on method
+            document.getElementById('paramsSection').style.display = method === 'GET' ? 'block' : 'none';
+            document.getElementById('bodySection').style.display = ['POST', 'PUT'].includes(method) ? 'block' : 'none';
+            
+            // Clear response
+            document.getElementById('responseSection').style.display = 'none';
+            
+            // Update active state
+            document.querySelectorAll('.endpoint-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.endpoint-btn').classList.add('active');
+        }
+
+        function addParam() {
+            const paramsList = document.getElementById('paramsList');
+            const row = document.createElement('div');
+            row.className = 'param-row';
+            row.innerHTML = `
+                <input type="checkbox" checked>
+                <input type="text" placeholder="Key">
+                <input type="text" placeholder="Value">
+                <button class="btn-sm" style="padding: 0.25rem 0.5rem;" onclick="this.parentElement.remove()">❌</button>
+            `;
+            paramsList.appendChild(row);
+        }
+
+        async function executeRequest() {
+            const btn = document.querySelector('.execute-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span><span>Sending...</span>';
+            
+            const baseUrl = document.getElementById('baseUrl').value;
+            const apiKey = document.getElementById('apiKey').value;
+            let url = baseUrl + currentEndpoint.path;
+            
+            // Add query parameters for GET requests
+            if (currentEndpoint.method === 'GET') {
+                const params = [];
+                document.querySelectorAll('#paramsList .param-row').forEach(row => {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (checkbox.checked) {
+                        const key = row.querySelectorAll('input[type="text"]')[0].value;
+                        const value = row.querySelectorAll('input[type="text"]')[1].value;
+                        if (key) params.push(`${key}=${value}`);
+                    }
+                });
+                if (params.length) url += '?' + params.join('&');
+            }
+            
+            const options = {
+                method: currentEndpoint.method,
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            
+            // Add body for POST/PUT requests
+            if (['POST', 'PUT'].includes(currentEndpoint.method)) {
+                const body = document.getElementById('requestBody').value;
+                if (body) options.body = body;
+            }
+            
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(url, options);
+                const data = await response.json();
+                const endTime = Date.now();
+                
+                // Display response
+                document.getElementById('responseSection').style.display = 'block';
+                document.getElementById('responseStatus').textContent = `${response.status} ${response.statusText}`;
+                document.getElementById('responseTime').textContent = `${endTime - startTime}ms`;
+                document.getElementById('responseSize').textContent = `${JSON.stringify(data).length} bytes`;
+                document.getElementById('responseBody').textContent = JSON.stringify(data, null, 2);
+                
+                // Scroll to response
+                document.getElementById('responseSection').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                document.getElementById('responseSection').style.display = 'block';
+                document.getElementById('responseStatus').textContent = 'Error';
+                document.getElementById('responseTime').textContent = '-';
+                document.getElementById('responseSize').textContent = '-';
+                document.getElementById('responseBody').textContent = `Error: ${error.message}`;
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<span>▶️</span><span>Send Request</span>';
+        }
+
+        function copyResponse() {
+            const responseText = document.getElementById('responseBody').textContent;
+            navigator.clipboard.writeText(responseText).then(() => {
+                const btn = document.querySelector('.copy-response-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ParseForge</h4>
+                    <p>Build powerful applications with our developer platform.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="docs.html">Documentation</a></li>
+                        <li><a href="sdks.html">SDKs & APIs</a></li>
+                        <li><a href="marketplace.html">Marketplace</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="playground.html">API Playground</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="resources.html">Guides & Tutorials</a></li>
+                        <li><a href="contact.html">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Account</h4>
+                    <ul>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="settings.html">Settings</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ParseForge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
